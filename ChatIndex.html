@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css"
+        integrity="sha384-PDle/QlgIONtM1aqA2Qemk5gPOE7wFq8+Em+G/hmo5Iq0CCmYZLv3fVRDJ4MMwEA" crossorigin="anonymous">
+</head>
+<style>
+    h1 {
+        margin-bottom: 50px;
+    }
+</style>
+
+<form>
+
+    <body>
+        <form>
+
+            <div>
+                <h1>
+                    Welcome to<span class="badge badge-secondary">Chat</span>
+                </h1>
+            </div>
+        </form>
+
+        
+        <div id="chat" ></br></div>
+               
+        </script>
+        <form>
+            <div class="row">
+                <div class="col-auto">
+                    <input type="text" class="form-control mb-2" id="name" placeholder="Name">
+                </div>
+                <div class="col-auto">
+                    <input type="text" class="form-control mb-2" id="message" placeholder="Text message">
+                </div>
+                <div>
+                    <button type="button" class="btn btn-primary" id="send" value="Send">Send</button>
+                </div>
+            </div>
+        </form>
+
+    
+
+    
+        <script>
+            $(function () {
+                getAllAnswers();
+
+                $("#send").click(function () {
+                    var name = $("#name").val();
+                    var message = $("#message").val();
+                    $.get(`http://localhost:51111/Chat/PostMessage?message=${message}&username=${name}/`,
+                        function (data) {
+                            getAllAnswers();
+                        })
+                })
+            });
+
+            setInterval(getAllAnswers, 100);
+
+            var getAllAnswers = function () {
+
+                $.get('http://localhost:51111/Chat/GetSerializableAnswers/', function (data) {
+                   var array = data.split('\n');
+                   $("#chat").html('');
+                   array.forEach(function(value, i, array) {
+
+                    $("#chat").append(`${value}<br>`);
+                   });
+                })
+            } 
+
+        </script>
+    </body>
+
+</form>
+
+</html>
